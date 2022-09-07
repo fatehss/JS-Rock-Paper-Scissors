@@ -5,21 +5,12 @@ function getComputerChoice(){
     else {return "scissors";}
 }
 
-function isValidInput(playerInput){
+function playRound(pc, computerChoice){
 
-    let lowerCase = playerInput.toLowerCase();
-    if (lowerCase === "rock" || lowerCase === "paper" || lowerCase ==="scissors")
-    {
-        return true;
-    }
-    else return false;
-
-}
-
-function playRound(playerChoice, computerChoice){
+    let playerChoice = pc.toLowerCase();
 
     if (playerChoice === computerChoice){
-        return "Draw! Computer chose "+computerChoice;
+        return ["draw","Draw! Computer chose "+computerChoice];
     }
 
     let win = 1;
@@ -30,10 +21,31 @@ function playRound(playerChoice, computerChoice){
     else if (playerChoice === "scissors"){
         if (computerChoice === "rock"){ win = 0;}
     }
-    else{ //player choice is rock
+    else if (playerChoice === "rock"){ //player choice is rock
         if (computerChoice === "rock"){win = 0;}
     }
+    else{
+        return ["invalid", "Please enter rock/paper/scissors."];
+    }
 
-    if (win === 1){ return "You win! " + playerChoice + " beats " + computerChoice + '.';}
-    else { return "You lose! " +  computerChoice + " beats " + playerChoice + '.';}
+    if (win === 1){ return ["win","You win! " + playerChoice + " beats " + computerChoice + '.']}
+    else { return ["lose","You lose! " +  computerChoice + " beats " + playerChoice + '.']}
+}
+
+function playGame(){
+
+    let playerScore = 0;
+    let computerScore = 0;
+    for (let i=0; i<5; ++i){
+        let val = prompt("What is your choice? rock/paper/scissors");
+        let outcome = playRound(val, getComputerChoice());
+
+        console.log(outcome[1]);
+
+        if (outcome[0] === "win"){playerScore++;}
+        else if (outcome[0] ==="lose"){computerScore++;}
+        else if (outcome[0] === "invalid"){i--;}
+        console.log("Player "+playerScore+" - "+computerScore+" Computer")
+    }
+    console.log("Game over! The score is player "+playerScore + " - "+computerScore+" computer.");
 }
